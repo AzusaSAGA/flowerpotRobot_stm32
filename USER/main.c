@@ -67,7 +67,6 @@ int main(void)
     //机械臂抬起
     Action_3_Arm_Lift(300, 0, 90.0f);
 
-
 	
 	while(1){
 		//遥控手柄控制
