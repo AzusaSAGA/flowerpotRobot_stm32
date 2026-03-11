@@ -37,38 +37,17 @@
 // ===== PWM 参数 =====
 #define MOTOR_PWM_MAX       1000
 
-// ===== 枚举定义 =====
-typedef enum
-{
-    MOTOR_LEFT = 0,
-    MOTOR_RIGHT
-} Motor_ID;
+// ==========================================
+// ===== 对外 API 接口 =======================
+// ==========================================
 
-typedef enum
-{
-    MOTOR_STOP_FREE = 0, 
-    MOTOR_BRAKE,         
-    MOTOR_FORWARD,       
-    MOTOR_REVERSE        
-} Motor_Mode;
-
-// ===== API =====
+// 初始化电机外设
 void Motor_Init(void);
-//void Motor_Control(Motor_ID motor, Motor_Mode mode, uint8_t speed_percent);
 
-void Motor_Move(int PWM_left,int PWM_right);
-
-
-// ==========================================
-// ===== 上层应用 API：小车运动姿态控制 ======
-// ==========================================
-// 参数 speed 范围: 0 ~ 1000 (代表 0% ~ 100% 占空比)
-//void Car_Forward(int speed);
-//void Car_Backward(int speed);
-//void Car_TurnLeft(int speed);
-//void Car_TurnRight(int speed);
-//void Car_Stop(void);
-
+// 控制小车运动 (输入范围: -1000 ~ +1000)
+// PWM_left > 0 左轮正转， < 0 左轮反转
+// PWM_right > 0 右轮正转， < 0 右轮反转
+void Motor_Move(int PWM_left, int PWM_right);
 
 
 #endif
