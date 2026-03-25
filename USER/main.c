@@ -56,6 +56,7 @@ int main(void)
 
 ///* --- 步进电机  --- */
     Stepper_Action_PickUp();   //抓取 (Pick)
+    
     Stepper_Action_PutDown();  //下放 (Place)
 
 	

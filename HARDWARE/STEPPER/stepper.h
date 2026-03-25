@@ -69,7 +69,7 @@ void Action_4_Arm_Lower(uint16_t rpm, uint8_t acc, float angle);
 
 void Stepper_Action_PickUp(void);   //抓取 (Pick)
 void Stepper_Action_PutDown(void);  //下放 (Place)
-void Stepper_Action_Idle(void);//停止
+void Stepper_Action_Idle(void);// 闲置
 
 
 #ifdef __cplusplus

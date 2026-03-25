@@ -224,9 +224,10 @@ void Stepper_Action_PutDown(void) {
  * @brief ÏÐÖÃ/¼±Í£½×¶Î (Idle)
  */
 void Stepper_Action_Idle(void) {
-    //»úÐµ±ÛºÍ»úÐµ×¦Á¢¼´Í£Ö¹
-    Emm_V5_Stop_Now(MOTOR_ID_ARM);
-    Emm_V5_Stop_Now(MOTOR_ID_CLAW);
+    
+//    //»úÐµ±ÛºÍ»úÐµ×¦Á¢¼´Í£Ö¹
+//    Emm_V5_Stop_Now(MOTOR_ID_ARM);
+//    Emm_V5_Stop_Now(MOTOR_ID_CLAW);
 }
 
 

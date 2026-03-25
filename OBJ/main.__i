@@ -1,0 +1,6 @@
+--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT
+-I.\RTE\_Template
+-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+-IC:\Keil_v5\ARM\CMSIS\Include
+-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER
+-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d "main.c"
