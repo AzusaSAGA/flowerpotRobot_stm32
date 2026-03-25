@@ -55,17 +55,8 @@ int main(void)
 //	
 
 ///* --- 步进电机  --- */
-    //机械爪松开
-    Action_2_Claw_Open(300, 0, 14.0f);
-    delay_ms(3000); 
-    // 机械爪抓取
-    Action_1_Claw_Grab(300, 0, 20.0f);
-    delay_ms(3000); 
-    //机械臂放下
-    Action_4_Arm_Lower(300, 0, 85.0f);
-    delay_ms(3000); 
-    //机械臂抬起
-    Action_3_Arm_Lift(300, 0, 90.0f);
+    Stepper_Action_PickUp();   //抓取 (Pick)
+    Stepper_Action_PutDown();  //下放 (Place)
 
 	
 	while(1){

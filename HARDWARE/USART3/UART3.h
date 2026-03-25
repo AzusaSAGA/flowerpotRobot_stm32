@@ -11,7 +11,7 @@
 typedef struct {
 	uint8_t header;
 	float data1;    // 左轮速度
-	float data2;    // 游轮速度
+	float data2;    // 右轮速度
 	uint8_t checksum;
 }USART3_Frame;
 #pragma pack(pop)      // 恢复之前的对齐方式

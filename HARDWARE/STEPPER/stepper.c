@@ -191,6 +191,45 @@ void Action_4_Arm_Lower(uint16_t rpm, uint8_t acc, float angle) {
     
     Smart_Motor_Pos_Run(MOTOR_ID_ARM, DIR_CCW, rpm, acc, pulse, wait_time_ms);
 }
+
+/* ==========================================================
+ * 拾取、放置与闲置封装
+ * ========================================================== */
+
+/**
+ * @brief 拾取阶段 (Pick)
+ */
+void Stepper_Action_PickUp(void) {
+    // 1. 触发夹爪闭合 
+    Action_1_Claw_Grab(600, 0, 15.0f); 
+    
+    // 2. 夹爪停稳后
+    Action_3_Arm_Lift(300, 0, 90.0f); 
+    
+    }
+
+/**
+ * @brief 放置阶段 (Place)
+ */
+void Stepper_Action_PutDown(void) {
+    // 1. 触发大臂下降至放花区 
+    Action_4_Arm_Lower(300, 0, 85.0f);
+
+    // 2. 大臂停稳后，触发夹爪松开
+    Action_2_Claw_Open(300, 0, 14.0f); 
+
+    }
+
+/**
+ * @brief 闲置/急停阶段 (Idle)
+ */
+void Stepper_Action_Idle(void) {
+    //机械臂和机械爪立即停止
+    Emm_V5_Stop_Now(MOTOR_ID_ARM);
+    Emm_V5_Stop_Now(MOTOR_ID_CLAW);
+}
+
+
 /* ==========================================================
  * 复位动作：双电机并行归零 (开机初始化寻找零点)
  * ========================================================== */
