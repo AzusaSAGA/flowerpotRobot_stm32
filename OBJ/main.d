@@ -48,7 +48,8 @@
 ..\obj\main.o: ..\HARDWARE\EC11\ec11.h
 ..\obj\main.o: ..\HARDWARE\NRF24L01\24l01.h
 ..\obj\main.o: ..\HARDWARE\NRF24L01\spi.h
-..\obj\main.o: ..\HARDWARE\USART1\usart1.h
+..\obj\main.o: ..\HARDWARE\UART4\UART4.h
+..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\main.o: ..\HARDWARE\POWER\power.h
 ..\obj\main.o: ..\HARDWARE\TIMER\timer.h
 ..\obj\main.o: ..\HARDWARE\USART3\UART3.h

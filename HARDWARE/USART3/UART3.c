@@ -8,7 +8,7 @@ volatile u8 USART3_RX_completed=0;       //接收完成状态标记
 extern int Encoder_Timer3_sum;
 extern int Encoder_Timer4_sum;
 
-USART3_Frame tx_frame;  // 编码器数据
+USART3_Frame tx_frame;  // stm32给jetson发送的数据包
 
 void uart3_init(unsigned long baudrate)
 {
@@ -85,21 +85,19 @@ void DMA1_Stream3_Config(void)
 }
 #endif
 
-void Prepare_Frame(float value1, float value2)
+// 组装 STM32 -> Jetson 的 5 字节数据包
+void Prepare_Frame(int8_t value1, int8_t value2)
 {
 	uint8_t *p = (uint8_t*)&tx_frame;
 	uint8_t sum = 0;
 
-	// 设置帧头
-	tx_frame.header = 0x55;
-
-	// 设置两个32位数据
+	tx_frame.header = 0x55; // 帧头
 	tx_frame.data1 = value1;
 	tx_frame.data2 = value2;
 
-	// 计算校验和（前9字节的和）
-	for(int i = 0; i < 9; i++) {
-	sum += p[i];
+	// 计算校验和（前 4 字节之和）
+	for(int i = 0; i < 4; i++) {
+	    sum += p[i];
 	}
 	tx_frame.checksum = sum;
 }
@@ -117,6 +115,9 @@ void USART3_Send_DMA(void)
 }
 #endif
 
+/*
+
+*/
 void USART3_Send_Data(uint8_t *data, uint8_t length)
 {
 	for(uint8_t i = 0; i < length; i++)
@@ -132,17 +133,26 @@ void USART3_Send_Data(uint8_t *data, uint8_t length)
 	while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
 }
 
-
 void USART3_IRQHandler(void)
 {
 	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET){
-        USART3_RX_BUF[USART3_RX_INDEX++]=USART_ReceiveData(USART3);		
-		//检查是否收到完整帧
-		if(USART3_RX_INDEX >=3){
-			USART3_RX_INDEX = 0;
-			//可以再加个校验
-			USART3_RX_completed = 1;
-		}
+        uint8_t res = USART_ReceiveData(USART3);
+        
+        // 帧头过滤：如果第一位不是0x55，重新对齐
+        if (USART3_RX_INDEX == 0 && res != 0x55) {
+            // 忽略非帧头数据
+        } else {
+            USART3_RX_BUF[USART3_RX_INDEX++] = res;
+            // 收到完整的 5 字节指令帧
+            if(USART3_RX_INDEX >= 5){
+                USART3_RX_INDEX = 0;
+                // 累加和校验 前4个字节之和(Byte0 + Byte1 + Byte2 + Byte3)
+                uint8_t calc_sum = USART3_RX_BUF[0] + USART3_RX_BUF[1] + USART3_RX_BUF[2] + USART3_RX_BUF[3];
+                if(calc_sum == USART3_RX_BUF[4]){
+                    USART3_RX_completed = 1; // 校验成功
+                }
+            }
+        }
 		USART_ClearITPendingBit(USART3, USART_IT_RXNE);
 	}
 	USART_ClearITPendingBit(USART3,USART_IT_ORE);

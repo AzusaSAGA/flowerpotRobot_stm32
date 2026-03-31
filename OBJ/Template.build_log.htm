@@ -22,7 +22,7 @@ Dialog DLL:      TCM.DLL V1.36.5.0
  
 <h2>Project:</h2>
 C:\Users\hu'he'meng'NB\Desktop\New_flowerpotRobot_stm32-master\USER\Template.uvprojx
-Project File Date:  03/13/2026
+Project File Date:  03/31/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
@@ -36,13 +36,15 @@ compiling main.c...
   u8 Get_voltage();
 ..\HARDWARE\POWER\power.h(14): warning:  #1-D: last line of file ends without a newline
   #endif
-main.c(105): warning:  #111-D: statement is unreachable
-  	return 0;
-main.c: 5 warnings, 0 errors
+main.c(96): warning:  #181-D: argument is incompatible with corresponding format string conversion
+          printf("data: %d %d\n", Encoders.speedA,Encoders.speedB);
+main.c(96): warning:  #181-D: argument is incompatible with corresponding format string conversion
+          printf("data: %d %d\n", Encoders.speedA,Encoders.speedB);
+main.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=20564 RO-data=8292 RW-data=84 ZI-data=2260  
+Program Size: Code=21532 RO-data=8292 RW-data=100 ZI-data=2452  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 5 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 

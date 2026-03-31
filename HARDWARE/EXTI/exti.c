@@ -37,7 +37,7 @@ void EXTIX_Init(void)
 //外部中断9_5服务程序
 void EXTI9_5_IRQHandler(void)
 {
-	delay_ms(10);	//消抖
+	//delay_ms(10);	//消抖
 	if (EXTI_GetITStatus(EXTI_Line8) != RESET){
 		if(0==KEY1){
 			key_value=1;
@@ -49,7 +49,7 @@ void EXTI9_5_IRQHandler(void)
 //外部中断15_10服务程序
 void EXTI15_10_IRQHandler(void)
 {
-	delay_ms(10);	//消抖
+	//delay_ms(10);	//消抖
 	if (EXTI_GetITStatus(EXTI_Line12) != RESET){
 		if(0==KEY2){
 			key_value=2;

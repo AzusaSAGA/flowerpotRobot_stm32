@@ -3,6 +3,8 @@
 #include "sys.h"
 #include <stdbool.h>
 
+extern uint8_t flag_grasp_done;
+extern uint8_t flag_place_done;
 
 /* ==========================================================
  * [搬花业务核心数值配置区]

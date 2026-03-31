@@ -150,13 +150,12 @@ static void Smart_Motor_Pos_Run(uint8_t motor_id, uint8_t dir, uint16_t vel, uin
 /* ==========================================================
  * 四大独立业务动作 (动态传参 + 自动时间推算)
  * ========================================================== */
-
 void Action_1_Claw_Grab(uint16_t rpm, uint8_t acc, float max_revs) {
     uint32_t pulse = (uint32_t)(max_revs * CLAW_PULSE_PER_REV);
     
     // 自动计算需要的时间(毫秒)：时间 = (圈数 / 每分钟转速) * 60秒 * 1000
     // 乘以 1.2 是为了留出 20% 的时间余量，防止被提前截断
-    uint32_t timeout_ms = (uint32_t)((max_revs * 60000.0f / rpm) * 1.2f);
+    uint32_t timeout_ms = (uint32_t)((max_revs * 60000.0f / rpm) * 1.2f);//防止意外并行
     if(timeout_ms < 2000) timeout_ms = 2000; // 兜底最低2秒
     
     Smart_Motor_Pos_Run(MOTOR_ID_CLAW, DIR_CW, rpm, acc, pulse, timeout_ms);
@@ -176,7 +175,7 @@ void Action_3_Arm_Lift(uint16_t rpm, uint8_t acc, float max_angle) {
     
     // 机械臂电机实际转的圈数 = 角度 * 200减速比 / 360
     float motor_revs = max_angle * 200.0f / 360.0f;
-    uint32_t timeout_ms = (uint32_t)((motor_revs * 60000.0f / rpm) * 1.2f);
+    uint32_t timeout_ms = (uint32_t)((motor_revs * 60000.0f / rpm) * 1.2f);//防止意外并行
     if(timeout_ms < 5000) timeout_ms = 5000; // 兜底最低5秒
     
     Smart_Motor_Pos_Run(MOTOR_ID_ARM, DIR_CW, rpm, acc, pulse, timeout_ms);
@@ -187,49 +186,51 @@ void Action_4_Arm_Lower(uint16_t rpm, uint8_t acc, float angle) {
     
     float motor_revs = angle * 200.0f / 360.0f;
     uint32_t wait_time_ms = (uint32_t)((motor_revs * 60000.0f / rpm) * 1.2f);
-    if(wait_time_ms < 2000) wait_time_ms = 2000;
+    if(wait_time_ms < 2000) wait_time_ms = 2000;// 兜底最低2秒
     
     Smart_Motor_Pos_Run(MOTOR_ID_ARM, DIR_CCW, rpm, acc, pulse, wait_time_ms);
 }
 
 /* ==========================================================
  * 拾取、放置与闲置封装
+ * 底层封装的Action_ 系列函数（内部调用了 Smart_Motor_Pos_Run）是带有 while(t < wait_time_ms) 的死等阻塞函数
  * ========================================================== */
-
 /**
- * @brief 拾取阶段 (Pick)
+ * @brief 抓取动作 (Pick) - 串行逻辑 
+ * @note  执行顺序：初始：复位后机械爪执行张开 1. 机械臂放下 2. 机械爪合并  3、机械臂抬起
  */
 void Stepper_Action_PickUp(void) {
-    // 1. 触发夹爪闭合 
-    Action_1_Claw_Grab(600, 0, 15.0f); 
-    
-    // 2. 夹爪停稳后
-    Action_3_Arm_Lift(300, 0, 90.0f); 
-    
-    }
+    // 1. 机械臂放下
+    Action_4_Arm_Lower(800, 0, 104.0f);
+    delay_ms(300); // 加入短延时消除电机骤停时的“机械惯性抖动”
+    // 2. 机械爪闭合
+    Action_1_Claw_Grab(600, 0, 13.0f);
+    delay_ms(300); 
+    // 3. 机械臂抬起
+    Action_3_Arm_Lift(800, 0, 98.0f); 
+}
 
 /**
- * @brief 放置阶段 (Place)
+ * @brief 放置动作 (Place) - 串行逻辑
+ * @note  执行顺序：初始：复位后机械臂执行张开 1. 机械臂放下  2. 机械爪张开 3、机械臂抬起
  */
 void Stepper_Action_PutDown(void) {
-    // 1. 触发大臂下降至放花区 
-    Action_4_Arm_Lower(300, 0, 85.0f);
-
-    // 2. 大臂停稳后，触发夹爪松开
-    Action_2_Claw_Open(300, 0, 14.0f); 
-
-    }
+     // 1. 机械臂放下
+    Action_4_Arm_Lower(600, 0, 104.0f);
+    delay_ms(300); 
+    // 2. 机械爪松开
+    Action_2_Claw_Open(600, 0, 14.0f);
+    delay_ms(300);
+    // 3. 机械臂抬起
+    Action_3_Arm_Lift(600, 0, 98.0f); 
+}
 
 /**
  * @brief 闲置/急停阶段 (Idle)
  */
 void Stepper_Action_Idle(void) {
     
-//    //机械臂和机械爪立即停止
-//    Emm_V5_Stop_Now(MOTOR_ID_ARM);
-//    Emm_V5_Stop_Now(MOTOR_ID_CLAW);
 }
-
 
 /* ==========================================================
  * 复位动作：双电机并行归零 (开机初始化寻找零点)
@@ -242,7 +243,7 @@ void Home_All_Simultaneously(void) {
     // 1. 下发超大脉冲指令，让它向着限位器(CW)一直转
     // 注意：归零时速度一定要慢，防止撞击过猛。这里统一使用 120 RPM
     if (Limit_Read_Claw() != 0) { // 限位器未触发时启动
-        Emm_V5_Pos_Control(MOTOR_ID_CLAW, DIR_CW, 120, 0, 999999);
+        Emm_V5_Pos_Control(MOTOR_ID_CLAW, DIR_CW, 120, 0, 99999);
     } else {
         claw_done = 1;
     }

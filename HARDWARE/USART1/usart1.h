@@ -1,5 +1,5 @@
-//#ifndef __USART1_H
-//#define __USART1_H
+//#ifndef __UART4_H
+//#define __UART4_H
 
 //#include "sys.h"
 //#include "delay.h"
@@ -10,7 +10,7 @@
 
 //extern u8 res;
 
-//void USART1_Init(unsigned long baudrate);
+//void UART4_Init(unsigned long baudrate);
 
 //#endif
 

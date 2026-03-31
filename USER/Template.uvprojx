@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\USER;..\FWLIB\inc;..\USER;..\HARDWARE\BEEP;..\HARDWARE\KEY;..\HARDWARE\OLED;..\HARDWARE\LED;..\HARDWARE\EC11;..\HARDWARE\POWER;..\HARDWARE\STEPPER;..\HARDWARE\MOTOR;..\HARDWARE\NRF24L01;..\HARDWARE\USART1;..\HARDWARE\TIMER;..\HARDWARE\MULTIMENU;..\HARDWARE\EXTI;..\HARDWARE\USART3;..\HARDWARE\encode;..\HARDWARE\LIMIT</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\USER;..\FWLIB\inc;..\USER;..\HARDWARE\BEEP;..\HARDWARE\KEY;..\HARDWARE\OLED;..\HARDWARE\LED;..\HARDWARE\EC11;..\HARDWARE\POWER;..\HARDWARE\STEPPER;..\HARDWARE\MOTOR;..\HARDWARE\NRF24L01;..\HARDWARE\USART1;..\HARDWARE\TIMER;..\HARDWARE\MULTIMENU;..\HARDWARE\EXTI;..\HARDWARE\USART3;..\HARDWARE\encode;..\HARDWARE\LIMIT;..\HARDWARE\UART4</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -706,6 +706,16 @@
               <FileName>limit.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\HARDWARE\LIMIT\limit.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\UART4\UART4.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\UART4\UART4.c</FilePath>
             </File>
           </Files>
         </Group>

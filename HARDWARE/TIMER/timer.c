@@ -75,7 +75,7 @@ void TIM7_IRQHandler(void)                          //得到编码器素的和位置
 		USART3_Send_DMA();
 		#endif
 		USART3_Send_Data((uint8_t*)&tx_frame, sizeof(tx_frame));
-		OLED_Show3FNum(0,10,Encoders.disA,1,3,16,1);
+        tx_frame.status &= 0x00;
 		OLED_Show3FNum(0,30,Encoders.speedA,1,3,16,1);
 //		OLED_ShowNum(0,10,Encoder_Timer3_sum,4,8,1);
 //		OLED_ShowNum(0,20,Encoder_Timer4_sum,4,8,1);
