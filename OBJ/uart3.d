@@ -1,6 +1,9 @@
 ..\obj\uart3.o: ..\HARDWARE\USART3\UART3.c
 ..\obj\uart3.o: ..\HARDWARE\USART3\UART3.h
-..\obj\uart3.o: ..\SYSTEM\sys\sys.h
+..\obj\uart3.o: ..\HARDWARE\UART4\UART4.h
+..\obj\uart3.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\uart3.o: ..\USER\stm32f4xx_conf.h
+..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_adc.h
 ..\obj\uart3.o: ..\USER\stm32f4xx.h
 ..\obj\uart3.o: ..\CORE\core_cm4.h
 ..\obj\uart3.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -9,8 +12,6 @@
 ..\obj\uart3.o: ..\CORE\core_cm4_simd.h
 ..\obj\uart3.o: ..\USER\system_stm32f4xx.h
 ..\obj\uart3.o: ..\USER\stm32f4xx_conf.h
-..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_adc.h
-..\obj\uart3.o: ..\USER\stm32f4xx.h
 ..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_crc.h
 ..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_dbgmcu.h
 ..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_dma.h
@@ -36,3 +37,4 @@
 ..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_dac.h
 ..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\uart3.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
+..\obj\uart3.o: ..\SYSTEM\sys\sys.h

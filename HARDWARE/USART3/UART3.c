@@ -1,15 +1,26 @@
 // 用于接收来自jetson orin nano的数据,同时发送编码器的数据
 #include "UART3.h"
+#include <stdio.h>
 
 volatile u8 USART3_RX_BUF[USART3_REC_LEN];     //接收缓冲,最大USART_REC_LEN个字节.
 volatile u8 USART3_RX_INDEX = 0;
 volatile u8 USART3_RX_completed=0;       //接收完成状态标记
+// 错误标志变量
+volatile uint8_t USART3_RX_ERROR = 0;   // 校验错误标志
+volatile uint8_t USART3_RX_ORE = 0;     // 溢出错误标志
 
-extern int Encoder_Timer3_sum;
-extern int Encoder_Timer4_sum;
 
+volatile uint8_t res = 0;
+volatile uint8_t calc_sum = 0;
+
+/////////////////////
 USART3_Frame tx_frame;  // stm32给jetson发送的数据包
+/////////////////////
 
+/******************************************************************
+ * 函数: uart3_init
+ * 功能: 初始化串口3（配置中断）
+ ******************************************************************/
 void uart3_init(unsigned long baudrate)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -53,40 +64,9 @@ void uart3_init(unsigned long baudrate)
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
 }
-#if SEND_DMA
-void DMA1_Stream3_Config(void)
-{
-	DMA_InitTypeDef DMA_InitStructure;
-
-	// 使能DMA1时钟
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
-
-	// 配置DMA1 Stream3 (USART3_TX)
-	DMA_DeInit(DMA1_Stream3);
-	DMA_InitStructure.DMA_Channel = DMA_Channel_4;
-	DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)&USART3->DR;
-	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)&tx_frame;
-	DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
-	DMA_InitStructure.DMA_BufferSize = sizeof(tx_frame);
-	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
-	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;
-	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
-	DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
-	DMA_Init(DMA1_Stream3, &DMA_InitStructure);
-
-	// 使能USART3 DMA TX请求
-	USART_DMACmd(USART3, USART_DMAReq_Tx, ENABLE);
-}
-#endif
-
+/////////////////////////////////////
 // 组装 STM32 -> Jetson 的 5 字节数据包
-void Prepare_Frame(int8_t value1, int8_t value2)
+void Prepare_Frame(uint32_t value1, uint32_t value2)
 {
 	uint8_t *p = (uint8_t*)&tx_frame;
 	uint8_t sum = 0;
@@ -95,26 +75,12 @@ void Prepare_Frame(int8_t value1, int8_t value2)
 	tx_frame.data1 = value1;
 	tx_frame.data2 = value2;
 
-	// 计算校验和（前 4 字节之和）
-	for(int i = 0; i < 4; i++) {
+	// 计算校验和（前 10 字节之和）
+	for(int i = 0; i < 10; i++) {
 	    sum += p[i];
 	}
 	tx_frame.checksum = sum;
 }
-#if SEND_DMA
-void USART3_Send_DMA(void)
-{
-	// 等待DMA空闲
-	while(DMA_GetCmdStatus(DMA1_Stream3) != DISABLE);
-
-	// 重新设置传输长度
-	DMA_SetCurrDataCounter(DMA1_Stream3, sizeof(tx_frame));
-
-	// 使能DMA流
-	DMA_Cmd(DMA1_Stream3, ENABLE);
-}
-#endif
-
 /*
 
 */
@@ -133,27 +99,50 @@ void USART3_Send_Data(uint8_t *data, uint8_t length)
 	while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
 }
 
+
 void USART3_IRQHandler(void)
 {
-	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET){
-        uint8_t res = USART_ReceiveData(USART3);
+    // 处理正常接收中断
+    if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
+    {
+        res = USART_ReceiveData(USART3);
+        // ==========================================
+        // ★ 核心透传测试：无论收到什么，立刻用 UART4 甩给电脑！
+        // ==========================================
+        //uart4_send_byte(res);
         
-        // 帧头过滤：如果第一位不是0x55，重新对齐
-        if (USART3_RX_INDEX == 0 && res != 0x55) {
-            // 忽略非帧头数据
-        } else {
-            USART3_RX_BUF[USART3_RX_INDEX++] = res;
-            // 收到完整的 5 字节指令帧
-            if(USART3_RX_INDEX >= 5){
-                USART3_RX_INDEX = 0;
-                // 累加和校验 前4个字节之和(Byte0 + Byte1 + Byte2 + Byte3)
-                uint8_t calc_sum = USART3_RX_BUF[0] + USART3_RX_BUF[1] + USART3_RX_BUF[2] + USART3_RX_BUF[3];
-                if(calc_sum == USART3_RX_BUF[4]){
-                    USART3_RX_completed = 1; // 校验成功
+        if (USART3_RX_completed == 0) 
+        {
+            if (USART3_RX_INDEX == 0) 
+            {
+                if (res == 0x55)  // 等待正确的帧头
+                {
+                    USART3_RX_BUF[USART3_RX_INDEX++] = res;
+                }
+            } 
+            else 
+            {
+                USART3_RX_BUF[USART3_RX_INDEX++] = res;
+                
+                if(USART3_RX_INDEX >= 5 ) //USART3_REC_LEN
+                {
+                   calc_sum = (USART3_RX_BUF[0] + USART3_RX_BUF[1] + 
+                                       USART3_RX_BUF[2] + USART3_RX_BUF[3]) & 0xFF;
+                    
+                    if(calc_sum == USART3_RX_BUF[4]) 
+                    {
+                        USART3_RX_completed = 1;  // ? 只设置标志，不发送
+                    }
+                    else
+                    {
+                        USART3_RX_ERROR = 1;  // ? 设置错误标志
+                    }
+                    
+                    USART3_RX_INDEX = 0;
                 }
             }
         }
-		USART_ClearITPendingBit(USART3, USART_IT_RXNE);
-	}
-	USART_ClearITPendingBit(USART3,USART_IT_ORE);
+    }
+    
 }
+

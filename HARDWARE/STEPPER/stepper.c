@@ -2,6 +2,16 @@
 #include "LIMIT.h"
 #include "delay.h"
 
+///* ================== 串口底层发送 (极度稳定版) ================== */
+//static void usart_SendCmd(USART_TypeDef* USARTx, uint8_t *cmd, uint8_t len) {
+//    for(uint8_t i = 0; i < len; i++) {
+//        USARTx->DR = cmd[i];
+//        // 采用标准死等模式，直到当前字节被塞入移位寄存器
+//        while((USARTx->SR & USART_FLAG_TXE) == 0); 
+//    }
+//    // 确保这 5 个或 13 个字节真真切切顺着电线发完，再允许单片机干别的事
+//    while((USARTx->SR & USART_FLAG_TC) == 0); 
+//}
 /* ================== 串口通信 ================== */
 static void usart_SendCmd(USART_TypeDef* USARTx, uint8_t *cmd, uint8_t len) {
     for(uint8_t i = 0; i < len; i++) {
@@ -150,13 +160,14 @@ static void Smart_Motor_Pos_Run(uint8_t motor_id, uint8_t dir, uint16_t vel, uin
 /* ==========================================================
  * 四大独立业务动作 (动态传参 + 自动时间推算)
  * ========================================================== */
+
 void Action_1_Claw_Grab(uint16_t rpm, uint8_t acc, float max_revs) {
     uint32_t pulse = (uint32_t)(max_revs * CLAW_PULSE_PER_REV);
     
     // 自动计算需要的时间(毫秒)：时间 = (圈数 / 每分钟转速) * 60秒 * 1000
     // 乘以 1.2 是为了留出 20% 的时间余量，防止被提前截断
-    uint32_t timeout_ms = (uint32_t)((max_revs * 60000.0f / rpm) * 1.2f);//防止意外并行
-    if(timeout_ms < 2000) timeout_ms = 2000; // 兜底最低2秒
+    uint32_t timeout_ms = (uint32_t)((max_revs * 60000.0f / rpm) );
+    if(timeout_ms < 500) timeout_ms = 500; // 兜底最低2秒
     
     Smart_Motor_Pos_Run(MOTOR_ID_CLAW, DIR_CW, rpm, acc, pulse, timeout_ms);
 }
@@ -164,8 +175,8 @@ void Action_1_Claw_Grab(uint16_t rpm, uint8_t acc, float max_revs) {
 void Action_2_Claw_Open(uint16_t rpm, uint8_t acc, float revs) {
     uint32_t pulse = (uint32_t)(revs * CLAW_PULSE_PER_REV);
     
-    uint32_t wait_time_ms = (uint32_t)((revs * 60000.0f / rpm) * 1.2f);
-    if(wait_time_ms < 1000) wait_time_ms = 1000;
+    uint32_t wait_time_ms = (uint32_t)((revs * 60000.0f / rpm) );
+    if(wait_time_ms < 500) wait_time_ms = 500;
     
     Smart_Motor_Pos_Run(MOTOR_ID_CLAW, DIR_CCW, rpm, acc, pulse, wait_time_ms);
 }
@@ -175,8 +186,8 @@ void Action_3_Arm_Lift(uint16_t rpm, uint8_t acc, float max_angle) {
     
     // 机械臂电机实际转的圈数 = 角度 * 200减速比 / 360
     float motor_revs = max_angle * 200.0f / 360.0f;
-    uint32_t timeout_ms = (uint32_t)((motor_revs * 60000.0f / rpm) * 1.2f);//防止意外并行
-    if(timeout_ms < 5000) timeout_ms = 5000; // 兜底最低5秒
+    uint32_t timeout_ms = (uint32_t)((motor_revs * 60000.0f / rpm) );
+    if(timeout_ms < 3000) timeout_ms = 3000; // 兜底最低5秒
     
     Smart_Motor_Pos_Run(MOTOR_ID_ARM, DIR_CW, rpm, acc, pulse, timeout_ms);
 }
@@ -184,113 +195,154 @@ void Action_3_Arm_Lift(uint16_t rpm, uint8_t acc, float max_angle) {
 void Action_4_Arm_Lower(uint16_t rpm, uint8_t acc, float angle) {
     uint32_t pulse = (uint32_t)(angle * ARM_PULSE_PER_DEG);
     
-    float motor_revs = angle * 200.0f / 360.0f;
-    uint32_t wait_time_ms = (uint32_t)((motor_revs * 60000.0f / rpm) * 1.2f);
-    if(wait_time_ms < 2000) wait_time_ms = 2000;// 兜底最低2秒
+    float motor_revs = angle * 200.0f / 360.0f;//* 1.2f
+    uint32_t wait_time_ms = (uint32_t)((motor_revs * 60000.0f / rpm) );
+    if(wait_time_ms < 1000) wait_time_ms = 1000;
     
     Smart_Motor_Pos_Run(MOTOR_ID_ARM, DIR_CCW, rpm, acc, pulse, wait_time_ms);
 }
 
 /* ==========================================================
- * 拾取、放置与闲置封装
- * 底层封装的Action_ 系列函数（内部调用了 Smart_Motor_Pos_Run）是带有 while(t < wait_time_ms) 的死等阻塞函数
+ * 拾取、放置与复位 (保留机械形变缓冲)
  * ========================================================== */
-/**
- * @brief 抓取动作 (Pick) - 串行逻辑 
- * @note  执行顺序：初始：复位后机械爪执行张开 1. 机械臂放下 2. 机械爪合并  3、机械臂抬起
- */
 void Stepper_Action_PickUp(void) {
-    // 1. 机械臂放下
-    Action_4_Arm_Lower(800, 0, 104.0f);
-    delay_ms(300); // 加入短延时消除电机骤停时的“机械惯性抖动”
-    // 2. 机械爪闭合
-    Action_1_Claw_Grab(600, 0, 13.0f);
-    delay_ms(300); 
-    // 3. 机械臂抬起
-    Action_3_Arm_Lift(800, 0, 98.0f); 
+    Action_4_Arm_Lower(200, 0, 20.0f); //105.0f
+    delay_ms(100); // 停稳避震
+    Action_1_Claw_Grab(300, 0, 20.0f); 
+    delay_ms(100); // 夹紧确认避震
+    Action_3_Arm_Lift(200, 0, 50.0f); //120.0f
 }
 
-/**
- * @brief 放置动作 (Place) - 串行逻辑
- * @note  执行顺序：初始：复位后机械臂执行张开 1. 机械臂放下  2. 机械爪张开 3、机械臂抬起
- */
 void Stepper_Action_PutDown(void) {
-     // 1. 机械臂放下
-    Action_4_Arm_Lower(600, 0, 104.0f);
-    delay_ms(300); 
-    // 2. 机械爪松开
-    Action_2_Claw_Open(600, 0, 14.0f);
-    delay_ms(300);
-    // 3. 机械臂抬起
-    Action_3_Arm_Lift(600, 0, 98.0f); 
+    Action_4_Arm_Lower(200, 0, 20.0f);
+    delay_ms(100); 
+    Action_2_Claw_Open(300, 0, 10.0f); 
+    delay_ms(100); 
+    Action_3_Arm_Lift(200, 0, 50.0f); 
 }
 
-/**
- * @brief 闲置/急停阶段 (Idle)
- */
 void Stepper_Action_Idle(void) {
     
 }
 
+
 /* ==========================================================
  * 复位动作：双电机并行归零 (开机初始化寻找零点)
  * ========================================================== */
+
 void Home_All_Simultaneously(void) {
     uint8_t arm_done = 0;
     uint8_t claw_done = 0;
-    uint32_t timeout_cnt = 0; // 超时计数器，防止限位器损坏导致死机
+    uint32_t timeout_cnt = 0; 
+    uint8_t claw_shake_cnt = 0; 
+    uint8_t arm_shake_cnt = 0;  
 
-    // 1. 下发超大脉冲指令，让它向着限位器(CW)一直转
-    // 注意：归零时速度一定要慢，防止撞击过猛。这里统一使用 120 RPM
-    if (Limit_Read_Claw() != 0) { // 限位器未触发时启动
-        Emm_V5_Pos_Control(MOTOR_ID_CLAW, DIR_CW, 120, 0, 99999);
-    } else {
-        claw_done = 1;
-    }
+    // 启动归零
+    if (Limit_Read_Claw() != 0) { 
+        Emm_V5_Pos_Control(MOTOR_ID_CLAW, DIR_CW, 120, 0, 999999);
+    } else claw_done = 1;
 
     if (Limit_Read_Arm() != 0) {
-        Emm_V5_Pos_Control(MOTOR_ID_ARM, DIR_CW, 120, 0, 999999);
-    } else {
-        arm_done = 1;
-    }
+        Emm_V5_Pos_Control(MOTOR_ID_ARM, DIR_CW, 300, 0, 999999);
+    } else arm_done = 1;
 
-    // 2. 并行死循环监控，微秒级急停响应 (设定最长等待时间 20 秒)
+    // 监控限位
     while ((!arm_done || !claw_done) && timeout_cnt < 20000) {
-        
-        // --- 机械爪碰到限位器 ---
         if (!claw_done && Limit_Read_Claw() == 0) {
-            // 抗干扰 3 连发，防止串口丢包撞坏结构
-            for(uint8_t i = 0; i < 3; i++) {
-                Emm_V5_Stop_Now(MOTOR_ID_CLAW); 
-                delay_ms(2);
+            claw_shake_cnt++;
+            if (claw_shake_cnt > 15) { 
+                for(uint8_t i = 0; i < 3; i++) { Emm_V5_Stop_Now(MOTOR_ID_CLAW); delay_ms(2); }
+                claw_done = 1;
             }
-            claw_done = 1;
-        }
+        } else if (!claw_done) claw_shake_cnt = 0;
         
-        // --- 机械臂碰到限位器 ---
         if (!arm_done && Limit_Read_Arm() == 0) {
-            // 抗干扰 3 连发急停
-            for(uint8_t i = 0; i < 3; i++) {
-                Emm_V5_Stop_Now(MOTOR_ID_ARM);  
-                delay_ms(2);
+            arm_shake_cnt++;
+            if (arm_shake_cnt > 15) { 
+                for(uint8_t i = 0; i < 3; i++) { Emm_V5_Stop_Now(MOTOR_ID_ARM); delay_ms(2); }
+                arm_done = 1;
             }
-            arm_done = 1;
-        }
+        } else if (!arm_done) arm_shake_cnt = 0;
         
         delay_ms(1);
         timeout_cnt++;
     }
     
-    // 3. 超时兜底保险 (如果20秒还没碰到限位器，强制停下，保护电机)
+    // 超时兜底
     if (timeout_cnt >= 20000) {
-        if (!claw_done) {
-            for(uint8_t i = 0; i < 3; i++) { Emm_V5_Stop_Now(MOTOR_ID_CLAW); delay_ms(2); }
-        }
-        if (!arm_done) {
-            for(uint8_t i = 0; i < 3; i++) { Emm_V5_Stop_Now(MOTOR_ID_ARM); delay_ms(2); }
-        }
+        if (!claw_done) for(uint8_t i=0; i<3; i++) { Emm_V5_Stop_Now(MOTOR_ID_CLAW); delay_ms(2); }
+        if (!arm_done) for(uint8_t i=0; i<3; i++) { Emm_V5_Stop_Now(MOTOR_ID_ARM); delay_ms(2); }
     }
     
-    // 4. 归零完成，电机锁定，给 500ms 缓冲防止机械抖动
-    delay_ms(500); 
+    // ==========================================
+    // ★ 核心绝杀：解除驱动器的“急停锁定”状态
+    // ==========================================
+    delay_ms(300); // 1. 先等电机卸力，刹车余震消散
+    
+    // 2. 给两个电机各发一条“转动 0 脉冲”的空指令。
+    // 这骗过了驱动器，让它以为要执行新动作，从而退出 0xFE 的锁定状态，但电机原地不动！
+    Emm_V5_Pos_Control(MOTOR_ID_CLAW, DIR_CCW, 100, 0, 0); 
+    Emm_V5_Pos_Control(MOTOR_ID_ARM, DIR_CCW, 100, 0, 0); 
+    
+    delay_ms(200); // 3. 唤醒完毕，状态机刷新，准备接收真实指令
 }
+
+//void Home_All_Simultaneously(void) {
+//    uint8_t arm_done = 0;
+//    uint8_t claw_done = 0;
+//    uint32_t timeout_cnt = 0; // 超时计数器，防止限位器损坏导致死机
+
+//    // 1. 下发超大脉冲指令，让它向着限位器(CW)一直转
+//    // 注意：归零时速度一定要慢，防止撞击过猛。这里统一使用 120 RPM
+//    if (Limit_Read_Claw() != 0) { // 限位器未触发时启动
+//        Emm_V5_Pos_Control(MOTOR_ID_CLAW, DIR_CW, 120, 0, 999999);
+//    } else {
+//        claw_done = 1;
+//    }
+
+//    if (Limit_Read_Arm() != 0) {
+//        Emm_V5_Pos_Control(MOTOR_ID_ARM, DIR_CW, 120, 0, 999999);
+//    } else {
+//        arm_done = 1;
+//    }
+
+//    // 2. 并行死循环监控，微秒级急停响应 (设定最长等待时间 20 秒)
+//    while ((!arm_done || !claw_done) && timeout_cnt < 20000) {
+//        
+//        // --- 机械爪碰到限位器 ---
+//        if (!claw_done && Limit_Read_Claw() == 0) {
+//            // 抗干扰 3 连发，防止串口丢包撞坏结构
+//            for(uint8_t i = 0; i < 3; i++) {
+//                Emm_V5_Stop_Now(MOTOR_ID_CLAW); 
+//                delay_ms(2);
+//            }
+//            claw_done = 1;
+//        }
+//        
+//        // --- 机械臂碰到限位器 ---
+//        if (!arm_done && Limit_Read_Arm() == 0) {
+//            // 抗干扰 3 连发急停
+//            for(uint8_t i = 0; i < 3; i++) {
+//                Emm_V5_Stop_Now(MOTOR_ID_ARM);  
+//                delay_ms(2);
+//            }
+//            arm_done = 1;
+//        }
+//        
+//        delay_ms(1);
+//        timeout_cnt++;
+//    }
+//    
+//    // 3. 超时兜底保险 (如果20秒还没碰到限位器，强制停下，保护电机)
+//    if (timeout_cnt >= 20000) {
+//        if (!claw_done) {
+//            for(uint8_t i = 0; i < 3; i++) { Emm_V5_Stop_Now(MOTOR_ID_CLAW); delay_ms(2); }
+//        }
+//        if (!arm_done) {
+//            for(uint8_t i = 0; i < 3; i++) { Emm_V5_Stop_Now(MOTOR_ID_ARM); delay_ms(2); }
+//        }
+//    }
+//    
+//    // 4. 归零完成，电机锁定，给 500ms 缓冲防止机械抖动
+//    delay_ms(300); 
+//}

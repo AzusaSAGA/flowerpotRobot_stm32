@@ -1,8 +1,8 @@
 Dependencies for Project 'Template', Target 'Template': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::ARMCC
-F (.\main.c)(0x69CB7D98)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x69D37A17)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (main.h)(0x69CB4CEE)
-I (..\HARDWARE\LED\led.h)(0x69B15695)
+I (..\HARDWARE\LED\led.h)(0x69CF7AE5)
 I (..\SYSTEM\sys\sys.h)(0x69B15696)
 I (..\USER\stm32f4xx.h)(0x69B15696)
 I (..\CORE\core_cm4.h)(0x69B15695)
@@ -43,17 +43,17 @@ I (..\HARDWARE\BEEP\beep.h)(0x69B15695)
 I (..\HARDWARE\KEY\key.h)(0x69B15695)
 I (..\HARDWARE\OLED\oled.h)(0x69B15695)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5D9AD21A)
-I (..\HARDWARE\STEPPER\stepper.h)(0x69C52392)
+I (..\HARDWARE\STEPPER\stepper.h)(0x69D12382)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5D9AD218)
 I (..\HARDWARE\MOTOR\motor.h)(0x69B15695)
 I (..\HARDWARE\EC11\ec11.h)(0x69B15695)
 I (..\HARDWARE\NRF24L01\24l01.h)(0x69C52392)
 I (..\HARDWARE\NRF24L01\spi.h)(0x69B15695)
-I (..\HARDWARE\UART4\UART4.h)(0x69CB700A)
+I (..\HARDWARE\UART4\UART4.h)(0x69D1F85D)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
 I (..\HARDWARE\POWER\power.h)(0x69B15695)
 I (..\HARDWARE\TIMER\timer.h)(0x69B15695)
-I (..\HARDWARE\USART3\UART3.h)(0x69CA63FF)
+I (..\HARDWARE\USART3\UART3.h)(0x69D373FB)
 I (..\HARDWARE\encode\encode.h)(0x69B15695)
 I (..\HARDWARE\LIMIT\LIMIT.h)(0x69B15695)
 F (.\stm32f4xx_it.c)(0x69B15696)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f4xx_it.o --omf_browse ..\obj\stm32f4xx_it.crf --depend ..\obj\stm32f4xx_it.d)
@@ -1548,8 +1548,8 @@ I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x69B15695)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5D9AD21A)
 I (..\HARDWARE\oled\oledfont.h)(0x69B15695)
 I (..\SYSTEM\delay\delay.h)(0x69B15696)
-F (..\HARDWARE\LED\led.c)(0x69B15695)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\led.o --omf_browse ..\obj\led.crf --depend ..\obj\led.d)
-I (..\HARDWARE\LED\led.h)(0x69B15695)
+F (..\HARDWARE\LED\led.c)(0x69CF7AE5)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\led.o --omf_browse ..\obj\led.crf --depend ..\obj\led.d)
+I (..\HARDWARE\LED\led.h)(0x69CF7AE5)
 I (..\SYSTEM\sys\sys.h)(0x69B15696)
 I (..\USER\stm32f4xx.h)(0x69B15696)
 I (..\CORE\core_cm4.h)(0x69B15695)
@@ -1665,8 +1665,8 @@ I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x69B15695)
 I (..\SYSTEM\delay\delay.h)(0x69B15696)
 I (..\HARDWARE\OLED\oled.h)(0x69B15695)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5D9AD21A)
-F (..\HARDWARE\STEPPER\stepper.c)(0x69CB7D7B)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\stepper.o --omf_browse ..\obj\stepper.crf --depend ..\obj\stepper.d)
-I (..\HARDWARE\STEPPER\stepper.h)(0x69C52392)
+F (..\HARDWARE\STEPPER\stepper.c)(0x69D35D4F)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\stepper.o --omf_browse ..\obj\stepper.crf --depend ..\obj\stepper.d)
+I (..\HARDWARE\STEPPER\stepper.h)(0x69D12382)
 I (..\SYSTEM\sys\sys.h)(0x69B15696)
 I (..\USER\stm32f4xx.h)(0x69B15696)
 I (..\CORE\core_cm4.h)(0x69B15695)
@@ -1821,7 +1821,7 @@ I (..\FWLIB\inc\stm32f4xx_can.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dac.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dcmi.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x69B15695)
-F (..\HARDWARE\TIMER\timer.c)(0x69CA67A4)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\timer.o --omf_browse ..\obj\timer.crf --depend ..\obj\timer.d)
+F (..\HARDWARE\TIMER\timer.c)(0x69D37B4D)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\timer.o --omf_browse ..\obj\timer.crf --depend ..\obj\timer.d)
 I (..\HARDWARE\TIMER\timer.h)(0x69B15695)
 I (..\SYSTEM\sys\sys.h)(0x69B15696)
 I (..\USER\stm32f4xx.h)(0x69B15696)
@@ -1865,10 +1865,12 @@ I (..\HARDWARE\KEY\key.h)(0x69B15695)
 I (..\HARDWARE\POWER\power.h)(0x69B15695)
 I (..\HARDWARE\NRF24L01\24l01.h)(0x69C52392)
 I (..\HARDWARE\NRF24L01\spi.h)(0x69B15695)
-I (..\HARDWARE\STEPPER\stepper.h)(0x69C52392)
+I (..\HARDWARE\STEPPER\stepper.h)(0x69D12382)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5D9AD218)
 I (..\HARDWARE\encode\encode.h)(0x69B15695)
-I (..\HARDWARE\USART3\UART3.h)(0x69CA63FF)
+I (..\HARDWARE\USART3\UART3.h)(0x69D373FB)
+I (..\HARDWARE\UART4\UART4.h)(0x69D1F85D)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
 F (..\HARDWARE\MULTIMENU\multimenu.c)(0x69B15695)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\multimenu.o --omf_browse ..\obj\multimenu.crf --depend ..\obj\multimenu.d)
 I (..\HARDWARE\MULTIMENU\multimenu.h)(0x69B15695)
 I (..\SYSTEM\sys\sys.h)(0x69B15696)
@@ -1945,9 +1947,12 @@ I (..\FWLIB\inc\stm32f4xx_dcmi.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x69B15695)
 I (..\SYSTEM\delay\delay.h)(0x69B15696)
 I (..\HARDWARE\KEY\key.h)(0x69B15695)
-F (..\HARDWARE\USART3\UART3.c)(0x69CA646F)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\uart3.o --omf_browse ..\obj\uart3.crf --depend ..\obj\uart3.d)
-I (..\HARDWARE\USART3\UART3.h)(0x69CA63FF)
-I (..\SYSTEM\sys\sys.h)(0x69B15696)
+F (..\HARDWARE\USART3\UART3.c)(0x69D3740D)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\uart3.o --omf_browse ..\obj\uart3.crf --depend ..\obj\uart3.d)
+I (..\HARDWARE\USART3\UART3.h)(0x69D373FB)
+I (..\HARDWARE\UART4\UART4.h)(0x69D1F85D)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
+I (..\USER\stm32f4xx_conf.h)(0x69B15696)
+I (..\FWLIB\inc\stm32f4xx_adc.h)(0x69B15695)
 I (..\USER\stm32f4xx.h)(0x69B15696)
 I (..\CORE\core_cm4.h)(0x69B15695)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5D9AD218)
@@ -1955,8 +1960,6 @@ I (..\CORE\core_cmInstr.h)(0x69B15695)
 I (..\CORE\core_cmFunc.h)(0x69B15695)
 I (..\CORE\core_cm4_simd.h)(0x69B15695)
 I (..\USER\system_stm32f4xx.h)(0x69B15696)
-I (..\USER\stm32f4xx_conf.h)(0x69B15696)
-I (..\FWLIB\inc\stm32f4xx_adc.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_crc.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dbgmcu.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dma.h)(0x69B15695)
@@ -1982,6 +1985,7 @@ I (..\FWLIB\inc\stm32f4xx_can.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dac.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dcmi.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x69B15695)
+I (..\SYSTEM\sys\sys.h)(0x69B15696)
 F (..\HARDWARE\encode\encode.c)(0x69B15695)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\encode.o --omf_browse ..\obj\encode.crf --depend ..\obj\encode.d)
 I (..\HARDWARE\encode\encode.h)(0x69B15695)
 I (..\SYSTEM\sys\sys.h)(0x69B15696)
@@ -2056,13 +2060,13 @@ I (..\FWLIB\inc\stm32f4xx_can.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dac.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_dcmi.h)(0x69B15695)
 I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x69B15695)
-I (..\HARDWARE\STEPPER\stepper.h)(0x69C52392)
+I (..\HARDWARE\STEPPER\stepper.h)(0x69D12382)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5D9AD218)
 I (..\SYSTEM\delay\delay.h)(0x69B15696)
 F (..\HARDWARE\LIMIT\limit.h)(0x69B15695)()
-F (..\HARDWARE\UART4\UART4.h)(0x69CB700A)()
-F (..\HARDWARE\UART4\UART4.c)(0x69CB7001)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\uart4.o --omf_browse ..\obj\uart4.crf --depend ..\obj\uart4.d)
-I (..\HARDWARE\UART4\UART4.h)(0x69CB700A)
+F (..\HARDWARE\UART4\UART4.h)(0x69D1F85D)()
+F (..\HARDWARE\UART4\UART4.c)(0x69D1FC62)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\USER -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\BEEP -I ..\HARDWARE\KEY -I ..\HARDWARE\OLED -I ..\HARDWARE\LED -I ..\HARDWARE\EC11 -I ..\HARDWARE\POWER -I ..\HARDWARE\STEPPER -I ..\HARDWARE\MOTOR -I ..\HARDWARE\NRF24L01 -I ..\HARDWARE\USART1 -I ..\HARDWARE\TIMER -I ..\HARDWARE\MULTIMENU -I ..\HARDWARE\EXTI -I ..\HARDWARE\USART3 -I ..\HARDWARE\encode -I ..\HARDWARE\LIMIT -I ..\HARDWARE\UART4-I.\RTE\_Template-IC:\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="529" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\uart4.o --omf_browse ..\obj\uart4.crf --depend ..\obj\uart4.d)
+I (..\HARDWARE\UART4\UART4.h)(0x69D1F85D)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
 I (..\USER\stm32f4xx_conf.h)(0x69B15696)
 I (..\FWLIB\inc\stm32f4xx_adc.h)(0x69B15695)

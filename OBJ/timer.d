@@ -47,3 +47,5 @@
 ..\obj\timer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ..\obj\timer.o: ..\HARDWARE\encode\encode.h
 ..\obj\timer.o: ..\HARDWARE\USART3\UART3.h
+..\obj\timer.o: ..\HARDWARE\UART4\UART4.h
+..\obj\timer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

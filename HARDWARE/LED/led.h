@@ -1,9 +1,11 @@
-#ifndef Led_H
-#define Led_H
+#ifndef __LED_H
+#define __LED_H
 #include "sys.h"
 
-#define LED1 PCout(13)	
-#define LED2 PCout(4)	 
-#define LED3 PCout(5)	
-void LED_Init(void);	
+
+//LED端口定义
+#define LED0 PFout(9)	// DS0
+#define LED1 PFout(10)	// DS1	 
+
+void LED_Init(void);//初始化		 				    
 #endif

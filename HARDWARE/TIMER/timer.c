@@ -70,13 +70,14 @@ void TIM7_IRQHandler(void)                          //得到编码器素的和位置
 {
 	if(TIM_GetITStatus(TIM7,TIM_IT_Update)==SET){
 		Solve_EncoData(0.01);    
-		Prepare_Frame(Encoders.speedA, Encoders.speedB);
+		//Prepare_Frame((uint32_t)Encoders.speedA, (uint32_t)Encoders.speedB);
+        Prepare_Frame((uint32_t)3.14, (uint32_t)3.1415);
 		#if SEND_DMA 
 		USART3_Send_DMA();
 		#endif
 		USART3_Send_Data((uint8_t*)&tx_frame, sizeof(tx_frame));
         tx_frame.status &= 0x00;
-		OLED_Show3FNum(0,30,Encoders.speedA,1,3,16,1);
+		//OLED_Show3FNum(0,30,Encoders.speedA,1,3,16,1);
 //		OLED_ShowNum(0,10,Encoder_Timer3_sum,4,8,1);
 //		OLED_ShowNum(0,20,Encoder_Timer4_sum,4,8,1);
 		//OLED_ShowNum(0,20,tmp_buf[1],3,8,1);
